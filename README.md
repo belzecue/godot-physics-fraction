@@ -1,6 +1,6 @@
 # godot-physics-fraction
 
-This project demonstrates how to use Godot's get_physics_interpolation_fraction() function to achieve smooth rigidbody motion no matter the physics tick rate (and its fluctuations) by decoupling visual representation from physics representation.  With this project you can explore what happens when the physics tick rate and the render rate differ dramatically.
+This project demonstrates how to use Godot's *get_physics_interpolation_fraction()* function to achieve smooth rigidbody motion no matter the physics tick rate (and its fluctuations) by decoupling visual representation from physics representation.  With this project you can explore what happens when the physics tick rate and the render rate differ dramatically.
 
 In Godot, and game platforms in general, smooth motion is achieved when either the physics tick is equal to or greater than the rendering rate (FPS) or when visual bodies are decoupled from their rigidbody representations.
 
@@ -8,7 +8,7 @@ We cannot reliably achieve the first goal, which leaves the second.  Once you de
 
 ## Physics fraction explained
 
-Learn about the magic ingredient [here](https://docs.godotengine.org/en/latest/classes/class_engine.html#class-engine-method-get-physics-interpolation-fraction).  This function tells us "the fraction through the current physics tick we are at the time of rendering the frame" e.g. [ Start_0.0 ... Physics Tick progress = 0.72 ... End_1.0 ] so, for the current rendered frame we are almost three-quarters of the way through a physics tick.  If we have movement code in _physics_process, it's not going to catch up until some future rendered frame, and when it does catch up, it's going to teleport to the new location.
+Learn about the magic ingredient [here](https://docs.godotengine.org/en/latest/classes/class_engine.html#class-engine-method-get-physics-interpolation-fraction).  This function tells us *"the fraction through the current physics tick we are at the time of rendering the frame"* e.g. [ Start_0.0 ... Physics Tick progress = 0.72 ... End_1.0 ] so, for the current rendered frame we are almost three-quarters of the way through a physics tick.  If we have movement code in _physics_process, it's not going to catch up until some future rendered frame, and when it does catch up, it's going to teleport to the new location.
 
 If we know how far until the next physics tick, we can lerp our positions during _process/idle and avoid any teleportation/stuttering when the physics tick falls below the FPS.  This come at a small cost: living in the past ever so slightly.  We cannot lerp from the current position to an unknown future position -- actually, we can if we choose to make an educated guess of varying uncertainty, but here we want guaranteed smooth motion with no corrections so we'll stick with known, precise positions.  We can only lerp from an object's prior last-known position (where it was before it got here) to its current known position (here!) while we wait for the latest physics tick to finish and return all object new positions.
 
@@ -38,7 +38,7 @@ The character controller and the blue balls are using physics_fraction-decoupled
   - **Jump** (spacebar)
     - Might as well jump (jump).  Go ahead and jump. Jump jump jump jump.
     - You can wall-climb too.
-    - **Infinite jump** (Home key/toggle)
+    - **Infinite jump** (home key /toggle)
 
 - **FPS/Physics tick**
   - **Cycle FPS** (PGDOWN)
@@ -47,5 +47,10 @@ The character controller and the blue balls are using physics_fraction-decoupled
   - **Cycle Physics** (PGUP)
     - Downshifts the physics tick from 60 to 45, 30, 20, 10, 5 then back to 60.
 
-- **Make it rain**
+- **Make it rain** (insert)
   - How many cubes until your FPS drops?  When you do hit that limit, try dropping the physics tick from 60 to 20 and observe how your FPS recovers due to the physics simulation running a third as often.
+
+## Physics fraction in the wild
+
+- Reddit [discussion](https://www.reddit.com/r/godot/comments/eveh2b/please_confirm_if_this_is_a_proper_way_to/)
+- Devmar discovers the magic sauce - [Youtube link](https://www.youtube.com/watch?v=gL0iibY6-Fg)
