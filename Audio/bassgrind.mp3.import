@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/bassgrind.mp3-08ab1952cedfda7e1bc4d01db4280309.mp3str"
+
+[deps]
+
+source_file="res://Audio/bassgrind.mp3"
+dest_files=[ "res://.import/bassgrind.mp3-08ab1952cedfda7e1bc4d01db4280309.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

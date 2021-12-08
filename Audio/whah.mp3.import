@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/whah.mp3-7f84804b29858a116258c4281bfb8dcb.mp3str"
+
+[deps]
+
+source_file="res://Audio/whah.mp3"
+dest_files=[ "res://.import/whah.mp3-7f84804b29858a116258c4281bfb8dcb.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,195 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Scripts/ChangePhysics.gd" type="Script" id=1]
+[ext_resource path="res://prefabs/wall.tscn" type="PackedScene" id=2]
+[ext_resource path="res://prefabs/ball.tscn" type="PackedScene" id=3]
+[ext_resource path="res://prefabs/player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://prefabs/ball_no_interp.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scripts/Impulse.gd" type="Script" id=6]
+[ext_resource path="res://Styles/DynamicFont.tres" type="DynamicFont" id=7]
+[ext_resource path="res://Scripts/ChangeFPS.gd" type="Script" id=8]
+[ext_resource path="res://Scripts/JumpMove.gd" type="Script" id=9]
+[ext_resource path="res://Scripts/HideList.gd" type="Script" id=10]
+[ext_resource path="res://Scripts/MakeItRain.gd" type="Script" id=11]
+[ext_resource path="res://Spatial.gd" type="Script" id=12]
+[ext_resource path="res://prefabs/cube.tscn" type="PackedScene" id=13]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://WalterTurncoat-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = SubResource( 1 )
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 12 )
+
+[node name="Scripts" type="Node" parent="."]
+
+[node name="ChangePhysics" type="Node" parent="Scripts"]
+script = ExtResource( 1 )
+label_path = NodePath("../../UI/MarginContainer/HBoxContainer/VBoxContainer/Physics Tick")
+
+[node name="ChangeFPS" type="Node" parent="Scripts"]
+script = ExtResource( 8 )
+fps_label_np = NodePath("../../UI/MarginContainer/HBoxContainer/VBoxContainer/FPS Tick")
+
+[node name="Impulse" type="Node" parent="Scripts"]
+script = ExtResource( 6 )
+__meta__ = {
+"_editor_description_": ""
+}
+ball_np = [ NodePath("../../Balls/Ball"), NodePath("../../Balls/Ball2"), NodePath("../../Balls/Ball No Interp"), NodePath("../../Balls/Ball No Interp2"), NodePath("../../Balls/Ball No Interp3") ]
+
+[node name="JumpMove" type="Node" parent="Scripts"]
+script = ExtResource( 9 )
+player_np = NodePath("../../Player")
+
+[node name="HideList" type="Node" parent="Scripts"]
+script = ExtResource( 10 )
+
+[node name="MakeItRain" type="Node" parent="Scripts"]
+script = ExtResource( 11 )
+cube = ExtResource( 13 )
+ceilingNode_np = NodePath("../../Walls/Spatial/Wall6")
+cubeHolder_np = NodePath("../../CubeHolder")
+cubes_label_np = NodePath("../../UI/MarginContainer/HBoxContainer/VBoxContainer/Cubes")
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.569007, -0.609766, 0.55174, 0, 0.670945, 0.741508, -0.822333, -0.421923, 0.381772, 0, 12.6618, 0 )
+shadow_enabled = true
+directional_shadow_depth_range = 1
+
+[node name="Walls" type="Node" parent="."]
+
+[node name="Spatial" type="Spatial" parent="Walls"]
+
+[node name="Wall" parent="Walls/Spatial" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 10, -10 )
+skeleton = NodePath("../..")
+
+[node name="Wall2" parent="Walls/Spatial" instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-08, 1, -1.62921e-07, 0, -1.62921e-07, -1, -1, -4.37114e-08, 7.1215e-15, -10, 10, 0 )
+skeleton = NodePath("../..")
+
+[node name="Wall3" parent="Walls/Spatial" instance=ExtResource( 2 )]
+transform = Transform( 1.31134e-07, -1, 1.62921e-07, 0, -1.62921e-07, -1, 1, 1.31134e-07, -2.13645e-14, 10, 10, 0 )
+skeleton = NodePath("../..")
+
+[node name="Wall4" parent="Walls/Spatial" instance=ExtResource( 2 )]
+transform = Transform( -1, -8.74228e-08, 3.82137e-15, 0, -4.37114e-08, -1, 8.74228e-08, -1, 4.37114e-08, 0, 10, 10 )
+skeleton = NodePath("../..")
+
+[node name="Wall5" parent="Walls/Spatial" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, -1.1921e-07, 0, 1.1921e-07, 1, 0, 0, 0 )
+skeleton = NodePath("../..")
+
+[node name="Wall6" parent="Walls/Spatial" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 20, 0 )
+skeleton = NodePath("../..")
+
+[node name="Balls" type="Node" parent="."]
+
+[node name="Ball" parent="Balls" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9, -8 )
+
+[node name="Ball2" parent="Balls" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 15, -7 )
+
+[node name="Ball No Interp" parent="Balls" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 8, -8 )
+
+[node name="Ball No Interp2" parent="Balls" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 12, -6 )
+
+[node name="Ball No Interp3" parent="Balls" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 11, -6 )
+
+[node name="Player" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 2 )
+jump_move = false
+
+[node name="UI" type="Node" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
+anchor_right = 1.0
+margin_left = 20.0
+margin_top = 5.0
+margin_right = -20.0
+margin_bottom = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer"]
+margin_right = 600.0
+margin_bottom = 110.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/HBoxContainer"]
+margin_right = 102.0
+margin_bottom = 110.0
+
+[node name="FPS Tick" type="Label" parent="UI/MarginContainer/HBoxContainer/VBoxContainer"]
+margin_right = 102.0
+margin_bottom = 34.0
+size_flags_horizontal = 5
+custom_colors/font_color = Color( 0, 0.976471, 1, 1 )
+custom_fonts/font = ExtResource( 7 )
+text = "text"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Physics Tick" type="Label" parent="UI/MarginContainer/HBoxContainer/VBoxContainer"]
+margin_top = 38.0
+margin_right = 102.0
+margin_bottom = 72.0
+custom_colors/font_color = Color( 1, 0.984314, 0, 1 )
+custom_fonts/font = ExtResource( 7 )
+text = "text"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Cubes" type="Label" parent="UI/MarginContainer/HBoxContainer/VBoxContainer"]
+margin_top = 76.0
+margin_right = 102.0
+margin_bottom = 110.0
+custom_colors/font_color = Color( 1, 0, 0.164706, 1 )
+custom_fonts/font = ExtResource( 7 )
+text = " Cubes: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="UI/MarginContainer/HBoxContainer"]
+margin_left = 106.0
+margin_top = 7.0
+margin_right = 600.0
+margin_bottom = 102.0
+size_flags_horizontal = 3
+custom_constants/shadow_offset_x = 3
+custom_constants/line_spacing = -5
+custom_constants/shadow_offset_y = 2
+custom_fonts/font = SubResource( 2 )
+text = "Jump2 Toggle:   HOME          
+Ball Boost:   LEFT CTRL   
+ Cycle FPS:   PAGE DOWN 
+Cycle Phys:   PAGE UP      
+ Make it rain:    INSERT       "
+align = 2
+
+[node name="CubeHolder" type="Node" parent="."]
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="AudioStreamPlayer1" type="AudioStreamPlayer" parent="Audio"]
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Audio"]
+
+[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="Audio"]
+
+[connection signal="finished" from="Audio/AudioStreamPlayer1" to="." method="_on_AudioStreamPlayer1_finished"]
+[connection signal="finished" from="Audio/AudioStreamPlayer2" to="." method="_on_AudioStreamPlayer2_finished"]
+[connection signal="finished" from="Audio/AudioStreamPlayer3" to="." method="_on_AudioStreamPlayer3_finished"]

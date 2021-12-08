@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/murmur.mp3-b52370c4f08f3534928a7c8e92338ddc.mp3str"
+
+[deps]
+
+source_file="res://Audio/murmur.mp3"
+dest_files=[ "res://.import/murmur.mp3-b52370c4f08f3534928a7c8e92338ddc.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

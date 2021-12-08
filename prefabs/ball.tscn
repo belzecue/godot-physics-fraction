@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://prefabs/sphere.material" type="Material" id=1]
+[ext_resource path="res://Scripts/RigidBodyPhysicsTween.gd" type="Script" id=2]
+
+[sub_resource type="PhysicsMaterial" id=1]
+friction = 0.0
+bounce = 0.5
+
+[sub_resource type="SphereShape" id=2]
+
+[sub_resource type="SphereMesh" id=3]
+
+[sub_resource type="Shader" id=4]
+code = "shader_type spatial;
+render_mode unshaded, cull_front, depth_draw_always;
+
+uniform float thickness = 0.1;
+uniform vec4 outline_color : hint_color = vec4(1.0);
+
+void vertex() {
+	VERTEX += NORMAL * thickness;
+}
+
+void fragment() {
+	ALBEDO = outline_color.rgb;
+	if(outline_color.a < 1.0) {
+		ALPHA = outline_color.a;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+shader_param/thickness = 0.05
+shader_param/outline_color = Color( 0.992157, 1, 0, 1 )
+
+[node name="Ball" type="Spatial"]
+script = ExtResource( 2 )
+rigid_body_path = NodePath("RigidBody")
+visual_body_target_path = NodePath("RigidBody")
+visual_body_path = NodePath("VisualBody")
+
+[node name="RigidBody" type="RigidBody" parent="."]
+physics_material_override = SubResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="RigidBody"]
+shape = SubResource( 2 )
+
+[node name="VisualBody2" type="MeshInstance" parent="RigidBody"]
+mesh = SubResource( 3 )
+material/0 = SubResource( 5 )
+
+[node name="VisualBody" type="MeshInstance" parent="."]
+mesh = SubResource( 3 )
+material/0 = ExtResource( 1 )

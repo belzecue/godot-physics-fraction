@@ -1,0 +1,65 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scripts/PlayerRBPhysTween.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/MouseControl.gd" type="Script" id=2]
+[ext_resource path="res://prefabs/PlayerRB.gd" type="Script" id=3]
+
+[sub_resource type="PhysicsMaterial" id=1]
+
+[sub_resource type="CapsuleShape" id=2]
+radius = 0.4
+
+[sub_resource type="SphereShape" id=3]
+radius = 0.5
+
+[node name="Player" type="Spatial"]
+script = ExtResource( 1 )
+rigid_body_path = NodePath("RigidBody")
+visual_body_target_path = NodePath("RigidBody/VisualBodyTarget")
+visual_body_path = NodePath("VisualBody")
+acceleration = 1250.0
+jump_move = true
+dir_source_np = NodePath("VisualBody/PivotY/PivotX")
+
+[node name="RigidBody" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+physics_material_override = SubResource( 1 )
+gravity_scale = 1.25
+contacts_reported = 1
+contact_monitor = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+linear_damp = 4.0
+script = ExtResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="RigidBody"]
+shape = SubResource( 2 )
+
+[node name="VisualBodyTarget" type="Spatial" parent="RigidBody"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, -0.85 )
+
+[node name="GroundSphere" type="Area" parent="RigidBody"]
+monitorable = false
+priority = 1.0
+
+[node name="GroundCheck" type="CollisionShape" parent="RigidBody/GroundSphere"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.87447e-08, 0.886376 )
+shape = SubResource( 3 )
+
+[node name="VisualBody" type="Spatial" parent="."]
+script = ExtResource( 2 )
+__meta__ = {
+"_editor_description_": ""
+}
+pivot_xaxis_np = NodePath("PivotY/PivotX")
+pivot_yaxis_np = NodePath("PivotY")
+clamp_xaxis_deg = 90
+
+[node name="PivotY" type="Spatial" parent="VisualBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05, 0, 0 )
+
+[node name="PivotX" type="Camera" parent="VisualBody/PivotY"]
+
+[connection signal="body_shape_entered" from="RigidBody/GroundSphere" to="RigidBody" method="_on_Area_body_shape_entered"]
+[connection signal="body_shape_exited" from="RigidBody/GroundSphere" to="RigidBody" method="_on_GroundSphere_body_shape_exited"]
