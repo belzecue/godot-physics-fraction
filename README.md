@@ -28,7 +28,7 @@ The character controller and the blue balls are using physics_fraction-decoupled
   - **Yellow balls**
     - These are plain rigidbodies that update their position during _physics_process.  As the physics tick rate drops below the FPS, movement becomes more of a slideshow.
   - **Blue balls**
-    - These balls are dipped in the magic sauce.  Instead of combining rigidbody with a visual body (mesh), the blue balls are constructed with decoupled rigidbodies and visual bodies.  With each rendered frame, the visual body lerps toward the last known physics position of its companion rigidbody according to how far through the current physics tick we are.
+    - These balls got dipped in the magic sauce.  Instead of combining rigidbody with a visual body (mesh), the blue balls are constructed with decoupled rigidbodies and visual bodies.  With each rendered frame, the visual body lerps toward the last known physics position of its companion rigidbody according to how far through the current physics tick we are.
     - Notice the yellow corona.  That is a child rigidbody used to indicate where the physics server thinks the ball should be for that physics tick.  As the physics tick rate falls you will see the yellow corona leading the blue visual body more and more.  And yet the blue visual body will continue to move smoothly due to updating/lerping in _process/idle.
   - **Ball boost** (left-CTRL)
     - Give each ball some random acceleration.  Hammer the boost key to really get those balls flying.
@@ -40,4 +40,12 @@ The character controller and the blue balls are using physics_fraction-decoupled
     - You can wall-climb too.
     - **Infinite jump** (Home key/toggle)
 
+- **FPS/Physics tick**
+  - **Cycle FPS** (PGDOWN)
+    - Downshifts the FPS from 60 to 45, 30, 20, 10, 5 then back to 60.
+    - Key inputs will be slow to respond under 20 fps.
+  - **Cycle Physics** (PGUP)
+    - Downshifts the physics tick from 60 to 45, 30, 20, 10, 5 then back to 60.
 
+- **Make it rain**
+  - How many cubes until your FPS drops?  When you do hit that limit, try dropping the physics tick from 60 to 20 and observe how your FPS recovers due to the physics simulation running a third as often.
