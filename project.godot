@@ -87,6 +87,11 @@ ui_insert={
  ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="World"
+3d_physics/layer_2="Player"
+
 [rendering]
 
 quality/driver/driver_name="GLES2"

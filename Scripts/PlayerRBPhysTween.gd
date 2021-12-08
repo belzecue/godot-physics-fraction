@@ -20,8 +20,8 @@ onready var max_velocity_squared_orig: float = max_velocity_squared
 onready var linear_damp_orig: float = rigid_body.linear_damp
 
 var input_velocity: Vector3
-var is_grounded: bool = true # Needs to be true on startup to correctly set was_grounded.
-var was_grounded: bool
+var is_grounded: bool = false # We start in air, falling.
+var was_grounded: bool = not is_grounded
 var ground_normal: Vector3 = Vector3.UP
 var is_running: bool
 var want_jump: bool
