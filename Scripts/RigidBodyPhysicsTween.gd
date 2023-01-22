@@ -32,7 +32,8 @@ onready var visual_body: Spatial = get_node(visual_body_path)
 onready var visual_body_target: Spatial = get_node(visual_body_target_path)
 
 # Variables.
-var visual_body_transform_old: Transform
+var physics_body_trans_last: Transform
+var physics_body_trans_current: Transform
 var visual_body_velocity: float
 var visual_body_velocity_previous: float
 
@@ -50,17 +51,18 @@ func _ready() -> void:
 		get_tree().quit()
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	# Store current transform for physics body.
-	visual_body_transform_old = visual_body_target.global_transform
+	physics_body_trans_last = physics_body_trans_current
+	physics_body_trans_current = visual_body_target.global_transform
 	
 
 func _process(delta: float) -> void:
 	var visual_body_last_pos: Vector3 = visual_body.global_transform.origin
 	
 	# Interpolate movement for visual body.
-	visual_body.global_transform = visual_body_transform_old.interpolate_with(
-		visual_body_target.global_transform,
+	visual_body.global_transform = physics_body_trans_last.interpolate_with(
+		physics_body_trans_current,
 		Engine.get_physics_interpolation_fraction()
 	)
 	
