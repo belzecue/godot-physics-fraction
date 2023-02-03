@@ -27,7 +27,7 @@ export(NodePath) var visual_body_path: NodePath
 
 
 # Assigned nodes.
-onready var rigid_body: RigidBody = get_node(rigid_body_path)
+onready var physics_body: RigidBody = get_node(rigid_body_path)
 onready var visual_body: Spatial = get_node(visual_body_path)
 onready var visual_body_target: Spatial = get_node(visual_body_target_path)
 
@@ -38,17 +38,17 @@ var visual_body_velocity: float
 var visual_body_velocity_previous: float
 
 
-func _init() -> void:
-	# Switch off physics jitter fix because we are using manual interpolation.
-	# -> Move to game manager startup if many instances.
-	if Engine.physics_jitter_fix != 0: Engine.physics_jitter_fix = 0
-
-
 func _ready() -> void:
 	# Sanity checks.
-	if not rigid_body or not visual_body or not visual_body_target:
-		printerr("RidigBodyPhysicsTween Error: Missing assigned body for " + self.name)
+	if not physics_body or not visual_body or not visual_body_target:
+		printerr("PhysicsTween Error: Missing assigned body for " + self.name)
 		get_tree().quit()
+	else:
+		physics_body_trans_current = physics_body.global_transform
+		physics_body_trans_last = physics_body.global_transform
+		visual_body.set_as_toplevel(true) # Unparent visual body transform from any parent.
+		set_process_priority(100) # Process other nodes first.
+		Engine.set_physics_jitter_fix(0.0)		
 
 
 func _physics_process(delta: float) -> void:

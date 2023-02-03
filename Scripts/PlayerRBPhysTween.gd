@@ -17,7 +17,7 @@ onready var acceleration_orig: float = acceleration
 onready var max_velocity_orig: float = max_velocity
 onready var max_velocity_squared: float = max_velocity * max_velocity
 onready var max_velocity_squared_orig: float = max_velocity_squared
-onready var linear_damp_orig: float = rigid_body.linear_damp
+onready var linear_damp_orig: float = physics_body.linear_damp
 
 var input_velocity: Vector3
 var is_grounded: bool = false # We start in air, falling.
@@ -32,24 +32,24 @@ func _physics_process(delta: float) -> void:
 	# Handle linear damping for air versus ground.
 	if not was_grounded and is_grounded:
 		# Air to Ground.
-		rigid_body.linear_damp = linear_damp_orig
+		physics_body.linear_damp = linear_damp_orig
 	elif was_grounded and not is_grounded:
 		# Ground to Air.
-		rigid_body.linear_damp = -1
+		physics_body.linear_damp = -1
 
 	# Apply physics forces from input.
 	if input_velocity != Vector3.ZERO:
 		var adjusted_velocity: Vector3 = input_velocity * acceleration * (sixty_delta / delta)
 		if is_grounded:
 			# Grounded.
-			rigid_body.add_central_force(
+			physics_body.add_central_force(
 				adjusted_velocity
 			)
 		elif jump_move:
 			# Not grounded and jump moving allowed.
-			var rbvsq: float = rigid_body.linear_velocity.length_squared()
+			var rbvsq: float = physics_body.linear_velocity.length_squared()
 			if rbvsq < max_velocity_squared:
-				rigid_body.add_central_force(
+				physics_body.add_central_force(
 					adjusted_velocity * lerp(1, 0, rbvsq / max_velocity_squared) # Throttle to max speed.
 				)
 		
@@ -60,7 +60,7 @@ func _physics_process(delta: float) -> void:
 		if is_grounded:
 			owner.playAudio(owner.mp3Whoosh, -24)
 		
-		rigid_body.apply_central_impulse(
+		physics_body.apply_central_impulse(
 			ground_normal * jump_strength * lerp(1, 3, (delta - sixty_delta) / 0.18333) # Fix for jump falloff as phys tick decreases.
 		)
 		want_jump = false
